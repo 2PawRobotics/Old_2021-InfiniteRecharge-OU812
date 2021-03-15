@@ -49,7 +49,10 @@ public class Robot extends TimedRobot {
   private double gyrocorrectionvalue = 0;
   private double ANGLE_DEAD_ZONE = 2;
   private double NGANGLE_DEAD_ZONE = -2;
-
+  private double Yaccel;
+  private double ydistancetraveled;
+  private double newydistancetraveled;
+  private double distancebias = 0.05;
   public Robot()
   {
     System.out.println("Robot.constructor()");
@@ -84,8 +87,13 @@ public class Robot extends TimedRobot {
     return Math.abs(raw) < DEAD_ZONE ? 0.0 : -raw; //if true returns 0.0 else return raw
   }
   private void gyrodrivecorrection(){
-    //targetangle -= currentgyroangle = gyrocorrectionvalue;
     gyrocorrectionvalue = targetangle - currentgyroangle;
+  }
+  private void distancemeasuring(){ //this method measures distance
+    newydistancetraveled = ydistancetraveled + Yaccel;
+    if (Math.abs()){
+    ydistancetraveled = newydistancetraveled;
+    }
   }
   @Override
   public void teleopPeriodic() { //1 is 100% so .2 is 20%
@@ -161,16 +169,21 @@ public class Robot extends TimedRobot {
    @Override
    public void autonomousPeriodic() { //autonomous code
    currentgyroangle = gyro.getAngle(); 
+   Yaccel = gyro.getRawAccelY();
    gyrodrivecorrection();
+   distancemeasuring();
    System.out.println("gyro correction value is " + gyrocorrectionvalue);
+   System.out.println("distance traveled" + ydistancetraveled);
      if (gyrocorrectionvalue > ANGLE_DEAD_ZONE){
-      tank.tankDrive(-0.3, 0.3, false);
+      tank.tankDrive(-0.35, 0.35, false);
      }
      else if(gyrocorrectionvalue < NGANGLE_DEAD_ZONE){
-      tank.tankDrive(0.3, -0.3, false);
+      tank.tankDrive(0.35, -0.35, false);
      }
      else {
       tank.tankDrive(0.0, 0.0);
+
+      
      }
 
    }
