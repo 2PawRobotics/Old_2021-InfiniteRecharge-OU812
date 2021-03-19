@@ -54,6 +54,7 @@ public class Robot extends TimedRobot {
   private double newydistancetraveled = 0;
   private double distancebias = 0.05;
   private double finalyaccel;
+  private boolean moving;
   public Robot()
   {
     System.out.println("Robot.constructor()");
@@ -171,9 +172,28 @@ public class Robot extends TimedRobot {
     tank.setSafetyEnabled(false);
     gyro.reset();
     gyro.calibrate();
-    
+    ydistancetraveled = 0;
    }
-  
+  public void ZeroTurn(){
+    if (gyrocorrectionvalue > ANGLE_DEAD_ZONE){
+       tank.tankDrive(-0.275, 0.275, false);
+       
+      }
+      else if(gyrocorrectionvalue < NGANGLE_DEAD_ZONE){
+       tank.tankDrive(0.275, -0.275, false);
+       
+      }
+    }
+    public void MovingTurn(){
+      if (gyrocorrectionvalue > ANGLE_DEAD_ZONE){
+         tank.tankDrive(-0.5, -0.4, false);
+         
+        }
+        else if(gyrocorrectionvalue < NGANGLE_DEAD_ZONE){
+         tank.tankDrive(-0.4, -0.5, false);
+         
+        }
+      }
    @Override
    public void autonomousPeriodic() { //autonomous code
     currentgyroangle = gyro.getAngle();
@@ -182,26 +202,27 @@ public class Robot extends TimedRobot {
    distancemeasuring();
    System.out.println("gyro correction value is " + gyrocorrectionvalue);
    System.out.println("distance traveled" + ydistancetraveled);
+   System.out.println("Yaccel = " + Yaccel);
    
-   if (ydistancetraveled >= -2 && ydistancetraveled <= 0.1){
+   if (ydistancetraveled <= 0 && ydistancetraveled >= -1){
     targetangle = 0;
    System.out.println("this is true"); }
-  else if (ydistancetraveled > 2 && ydistancetraveled<5){
-    targetangle = 90;}
+  else {
+    System.out.println("disable");
+    
+  }
 
 
-   if (gyrocorrectionvalue > ANGLE_DEAD_ZONE){
-      tank.tankDrive(-0.275, 0.275, false);
-      System.out.println("1");
-     }
-     else if(gyrocorrectionvalue < NGANGLE_DEAD_ZONE){
-      tank.tankDrive(0.275, -0.275, false);
-      System.out.println("2");
-     }
-     else {
-      tank.tankDrive(-0.40, -0.45, false);
+  
+      while (Math.abs(gyrocorrectionvalue) > 15){
+        ZeroTurn();
+      }
+      while (Math.abs(gyrocorrectionvalue) > ANGLE_DEAD_ZONE){
+        MovingTurn();
+      }
+      tank.tankDrive(-0.4, -0.4, false);
       System.out.println("3");
-     }
+     
       
      
 
