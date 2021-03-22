@@ -55,6 +55,10 @@ public class Robot extends TimedRobot {
   private double distancebias = 0.05;
   private double finalyaccel;
   private boolean moving;
+  private double autonpath = 1;
+  private boolean turnmode = false;
+  private double stepcounter = 1;
+  private double currenttime = 0;
   public Robot()
   {
     System.out.println("Robot.constructor()");
@@ -101,6 +105,12 @@ public class Robot extends TimedRobot {
     }
     newydistancetraveled = ydistancetraveled + finalyaccel;
     ydistancetraveled = newydistancetraveled;
+  }
+
+
+  public void autonpath1(){
+    
+
   }
   @Override
   public void teleopPeriodic() { //1 is 100% so .2 is 20%
@@ -168,20 +178,22 @@ public class Robot extends TimedRobot {
     System.out.println("Robot.autonomous()");
     timer.reset();
     timer.start();
-
+    turnmode = false;
     tank.setSafetyEnabled(false);
     gyro.reset();
     gyro.calibrate();
     ydistancetraveled = 0;
     targetangle = 0;
+    stepcounter = 1;
+    currenttime = 0;
    }
   public void ZeroTurn(){
     if (gyrocorrectionvalue > ANGLE_DEAD_ZONE){
-       tank.tankDrive(-0.275, 0.275, false);
+       tank.tankDrive(-0.375, 0.375, false);
        
       }
       else if(gyrocorrectionvalue < NGANGLE_DEAD_ZONE){
-       tank.tankDrive(0.275, -0.275, false);
+       tank.tankDrive(0.375, -0.375, false);
        
       }
     }
@@ -207,14 +219,47 @@ public class Robot extends TimedRobot {
    System.out.println("Time is " + timer.get());
    System.out.println("Target angle = " + targetangle);
    System.out.println("" + currentgyroangle);
-   if (timer.get() <= 2){
-    targetangle = 0;
-   System.out.println("stage 1"); }
-  else if (timer.get() > 2 && timer.get() < 5){
-    targetangle = -90;
-  }
+   System.out.println(""  );
 
-
+    currenttime = timer.get();
+    
+      if(timer.get() > 0 && timer.get() <= 3.717 && stepcounter == 1)
+    {
+      targetangle = 0;
+      turnmode = false;
+    }    
+    else if(timer.get() > 3.717 && stepcounter == 1)
+    {
+      turnmode = true;
+      targetangle = 90;
+      stepcounter++;
+    }
+    else if(Math.abs(gyrocorrectionvalue) < DEAD_ZONE && stepcounter == 2)
+    {
+      turnmode = false;
+      timer.reset();
+      timer.start();
+      stepcounter++;
+    }
+    else if(timer.get() > 0 && timer.get() <= 1.545 && stepcounter == 3)
+    {
+      targetangle = 90;
+      turnmode = false;
+    }    
+    else if(timer.get() > 1.545 && stepcounter == 3)
+    {
+      turnmode = true;
+      targetangle = 180;
+      stepcounter++;
+    }
+    else if(Math.abs(gyrocorrectionvalue) < DEAD_ZONE && stepcounter == 4)
+    {
+      turnmode = false;
+      timer.reset();
+      timer.start();
+      stepcounter++;
+    }
+    
   
       if (Math.abs(gyrocorrectionvalue) > 15){
         ZeroTurn();
@@ -222,11 +267,12 @@ public class Robot extends TimedRobot {
        else if (Math.abs(gyrocorrectionvalue) > 4){
         MovingTurn();
       }
-      else
-      tank.tankDrive(-0.3, -0.3, false);
-      
-     
-      
+      else if(turnmode == true){
+        tank.tankDrive(0, 0, false);
+      }
+      else 
+      tank.tankDrive(-0.4, -0.4, false);
+        
      
 
    }
