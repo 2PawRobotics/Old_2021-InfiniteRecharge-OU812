@@ -224,48 +224,128 @@ public class Robot extends TimedRobot {
 
     currenttime = timer.get();
     
-      if(timer.get() > 0 && timer.get() <= 3.717 && stepcounter == 1)
+      if(timer.get() > 0 && timer.get() <= 3.817 && stepcounter == 1)
     {
       targetangle = 0;
       turnmode = false;
-      System.out.println("first drive");
+      System.out.println("SC1 drive");
     }    
-    else if(timer.get() > 3.717 && stepcounter == 1)
+    else if(timer.get() > 3.817 && stepcounter == 1)
     {
       turnmode = true;
       targetangle = 90;
       stepcounter++;
-      System.out.println("turning");
+      System.out.println("SC1 turning");
     }
     else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 2)
     {
       turnmode = false;
       timer.reset();
-      System.out.println("TiMeR rEsEt !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-      //timer.start();
+      System.out.println("Timer Reset");
       stepcounter++;
     }
-    else if(timer.get() > 0 && timer.get() <= 1.545 && stepcounter == 3)
+    else if(timer.get() > 0 && timer.get() <= 1.445 && stepcounter == 3)
     {
       targetangle = 90;
       turnmode = false;
+      System.out.println("SC3 Drive");
     }    
-    else if(timer.get() > 1.545 && stepcounter == 3)
+    else if(timer.get() > 1.445 && stepcounter == 3)
     {
       turnmode = true;
       targetangle = 180;
       stepcounter++;
+      System.out.println("SC3 Turning");
+
     }
     else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 4)
     {
       turnmode = false;
       timer.reset();
-      //timer.start();
       stepcounter++;
+      System.out.println("Timer Reset");
     }
-    
-  
-      if (Math.abs(gyrocorrectionvalue) > 15){
+    else if(timer.get() > 0 && timer.get() <= 1.303 && stepcounter == 5) //Logan started here
+    {
+      targetangle = 180;
+      turnmode = false;
+      System.out.println("SC5 Drive");
+    }    
+    else if(timer.get() > 1.303 && stepcounter == 5)
+    {
+      turnmode = true;
+      targetangle = 270;
+      stepcounter++;
+      System.out.println("SC5 Turning");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 6)
+    {
+      turnmode = false;
+      timer.reset();
+      stepcounter++;
+      System.out.println("Timer Reset");
+    }
+    else if(timer.get() > 0 && timer.get() <= 1.182 && stepcounter == 7)
+    {
+      targetangle = 270;
+      turnmode = false;
+      System.out.println("SC7 Drive");
+    }    
+    else if(timer.get() > 1.182 && stepcounter == 7)
+    {
+      turnmode = true;
+      targetangle = 348;
+      stepcounter++;
+      System.out.println("Sc7 Turn");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 8)
+    {
+      turnmode = false;
+      timer.reset();
+      stepcounter++;
+      System.out.println("Timer Reset");
+    }
+    else if(timer.get() > 0 && timer.get() <= 3.41 && stepcounter == 9)
+    {
+      targetangle = 348;
+      turnmode = false;
+      System.out.println("SC9 Drive");
+    }    
+    else if(timer.get() > 3.41 && stepcounter == 9)
+    {
+      turnmode = true;
+      targetangle = 270;
+      stepcounter++;
+      System.out.println("Sc9 Turn");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 10)
+    {
+      turnmode = false;
+      timer.reset();
+      stepcounter++;
+      System.out.println("Reset Time");
+    }
+    else if(timer.get() > 0 && timer.get() <= 1.333 && stepcounter == 11)
+    {
+      targetangle = 270;
+      turnmode = false;
+      System.out.println("SC11 Drive");
+    }    
+    else if(timer.get() > 1.333 && stepcounter == 11)
+    {
+      turnmode = true;
+      targetangle = 180;
+      stepcounter++;
+      System.out.println("SC11 Turn");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 12)
+    {
+      turnmode = false;
+      timer.reset();
+      stepcounter++;
+      System.out.println("Reset Time");
+    }
+      if (Math.abs(gyrocorrectionvalue) > 10){
         ZeroTurn();
       }
        else if (Math.abs(gyrocorrectionvalue) > 2){
