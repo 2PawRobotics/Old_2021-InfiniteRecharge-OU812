@@ -345,6 +345,119 @@ public class Robot extends TimedRobot {
       stepcounter++;
       System.out.println("Reset Time");
     }
+    else if(timer.get() > 0 && timer.get() <= 1.394 && stepcounter == 13)
+    {
+      targetangle = 180;
+      turnmode = false;
+      System.out.println("SC13 Drive");
+    }    
+    else if(timer.get() > 1.394 && stepcounter == 13)
+    {
+      turnmode = true;
+      targetangle = 90;
+      stepcounter++;
+      System.out.println("SC13 Turn");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 14)
+    {
+      turnmode = false;
+      timer.reset();
+      stepcounter++;
+      System.out.println("Reset Time");
+    }
+    else if(timer.get() > 0 && timer.get() <= 1.424 && stepcounter == 15)
+    {
+      targetangle = 90;
+      turnmode = false;
+      System.out.println("SC15 Drive");
+    }    
+    else if(timer.get() > 1.424 && stepcounter == 15)
+    {
+      turnmode = true;
+      targetangle = 40;
+      stepcounter++;
+      System.out.println("SC15 Turn");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 16)
+    {
+      turnmode = false;
+      timer.reset();
+      stepcounter++;
+      System.out.println("Reset Time");
+    }
+    else if(timer.get() > 0 && timer.get() <= 2.82 && stepcounter == 17)
+    {
+      targetangle = 40;
+      turnmode = false;
+      System.out.println("SC17 Drive");
+    }    
+    else if(timer.get() > 2.82 && stepcounter == 17)
+    {
+      turnmode = true;
+      targetangle = -30;
+      stepcounter++;
+      System.out.println("SC17 Turn");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 18)
+    {
+      turnmode = false;
+      timer.reset();
+      stepcounter++;
+      System.out.println("Reset Time");
+    }
+    else if(timer.get() > 0 && timer.get() <= 1.152 && stepcounter == 19)
+    {
+      targetangle = -30;
+      turnmode = false;
+      System.out.println("SC19 Drive");
+    }    
+    else if(timer.get() > 1.152 && stepcounter == 19)
+    {
+      turnmode = true;
+      targetangle = -90;
+      stepcounter++;
+      System.out.println("SC19 Turn");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 20)
+    {
+      turnmode = false;
+      timer.reset();
+      stepcounter++;
+      System.out.println("Reset Time");
+    }
+    else if(timer.get() > 0 && timer.get() <= 1.424 && stepcounter == 21)
+    {
+      targetangle = -90;
+      turnmode = false;
+      System.out.println("SC21 Drive");
+    }    
+    else if(timer.get() > 1.424 && stepcounter == 21)
+    {
+      turnmode = true;
+      targetangle = -180;
+      stepcounter++;
+      System.out.println("SC21 Turn");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 22)
+    {
+      turnmode = false;
+      timer.reset();
+      stepcounter++;
+      System.out.println("Reset Time");
+    }
+    else if(timer.get() > 0 && timer.get() <= 7.871 && stepcounter == 23)
+    {
+      targetangle = -180;
+      turnmode = false;
+      System.out.println("SC23 Drive");
+    }    
+    else if(timer.get() > 7.871 && stepcounter == 23)
+    {
+      targetangle = -180;
+      turnmode = true;
+      System.out.println("End of Auton Path 1");
+    }
+    
       if (Math.abs(gyrocorrectionvalue) > 10){
         ZeroTurn();
       }
