@@ -59,6 +59,7 @@ public class Robot extends TimedRobot {
   private boolean turnmode = false;
   private double stepcounter = 1;
   private double currenttime = 0;
+  private double autondeadzone = 2;
   public Robot()
   {
     System.out.println("Robot.constructor()");
@@ -213,13 +214,13 @@ public class Robot extends TimedRobot {
     Yaccel = gyro.getRawAccelY();
     gyrodrivecorrection();
    distancemeasuring();
-   System.out.println("gyro correction value is " + gyrocorrectionvalue);
-   System.out.println("distance traveled" + ydistancetraveled);
-   System.out.println("Yaccel = " + Yaccel);
-   System.out.println("Time is " + timer.get());
-   System.out.println("Target angle = " + targetangle);
-   System.out.println("" + currentgyroangle);
-   System.out.println(""  );
+   //System.out.println("gyro correction value is " + gyrocorrectionvalue);
+   //System.out.println("distance traveled" + ydistancetraveled);
+   //System.out.println("Yaccel = " + Yaccel);
+   //System.out.println("Time is " + timer.get());
+   //System.out.println("Target angle = " + targetangle);
+   //System.out.println("" + currentgyroangle);
+   //System.out.println(""  );
 
     currenttime = timer.get();
     
@@ -227,18 +228,21 @@ public class Robot extends TimedRobot {
     {
       targetangle = 0;
       turnmode = false;
+      System.out.println("first drive");
     }    
     else if(timer.get() > 3.717 && stepcounter == 1)
     {
       turnmode = true;
       targetangle = 90;
       stepcounter++;
+      System.out.println("turning");
     }
-    else if(Math.abs(gyrocorrectionvalue) < DEAD_ZONE && stepcounter == 2)
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 2)
     {
       turnmode = false;
       timer.reset();
-      timer.start();
+      System.out.println("TiMeR rEsEt !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+      //timer.start();
       stepcounter++;
     }
     else if(timer.get() > 0 && timer.get() <= 1.545 && stepcounter == 3)
@@ -252,11 +256,11 @@ public class Robot extends TimedRobot {
       targetangle = 180;
       stepcounter++;
     }
-    else if(Math.abs(gyrocorrectionvalue) < DEAD_ZONE && stepcounter == 4)
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 4)
     {
       turnmode = false;
       timer.reset();
-      timer.start();
+      //timer.start();
       stepcounter++;
     }
     
@@ -264,7 +268,7 @@ public class Robot extends TimedRobot {
       if (Math.abs(gyrocorrectionvalue) > 15){
         ZeroTurn();
       }
-       else if (Math.abs(gyrocorrectionvalue) > 4){
+       else if (Math.abs(gyrocorrectionvalue) > 2){
         MovingTurn();
       }
       else if(turnmode == true){
