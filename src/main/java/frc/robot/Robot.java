@@ -42,14 +42,24 @@ public class Robot extends TimedRobot {
   private AHRS gyro;
   private double DEAD_ZONE = 0.05; //dead zone for controlers
   private boolean tankDriveMode = false; 
-  private double targetangle = 90;
+  private double targetangle = 0;
   private double gyrobias = 0.05;
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private double currentgyroangle = 0;
   private double gyrocorrectionvalue = 0;
   private double ANGLE_DEAD_ZONE = 2;
   private double NGANGLE_DEAD_ZONE = -2;
-
+  private double Yaccel;
+  private double ydistancetraveled = 0;
+  private double newydistancetraveled = 0;
+  private double distancebias = 0.05;
+  private double finalyaccel;
+  private boolean moving;
+  private double autonpath = 1;
+  private boolean turnmode = false;
+  private double stepcounter = 1;
+  private double currenttime = 0;
+  private double autondeadzone = 2;
   public Robot()
   {
     System.out.println("Robot.constructor()");
@@ -84,8 +94,24 @@ public class Robot extends TimedRobot {
     return Math.abs(raw) < DEAD_ZONE ? 0.0 : -raw; //if true returns 0.0 else return raw
   }
   private void gyrodrivecorrection(){
-    //targetangle -= currentgyroangle = gyrocorrectionvalue;
+     
     gyrocorrectionvalue = targetangle - currentgyroangle;
+  }
+  private void distancemeasuring(){ //this method measures distance
+    
+    if (Math.abs(Yaccel) < distancebias){
+      finalyaccel = 0.0; }
+    else{
+      finalyaccel = Yaccel;
+    }
+    newydistancetraveled = ydistancetraveled + finalyaccel;
+    ydistancetraveled = newydistancetraveled;
+  }
+
+
+  public void autonpath1(){
+    
+
   }
   @Override
   public void teleopPeriodic() { //1 is 100% so .2 is 20%
@@ -99,6 +125,8 @@ public class Robot extends TimedRobot {
     else{
       tank.arcadeDrive(getRightJoy(), getRightJoyX(), true);
     }
+    distancemeasuring();
+    System.out.println("distance traveled" + ydistancetraveled);
 
     System.out.println("gyro angle is" + gyro.getAngle());
     System.out.println("Distance is " + gyro.getWorldLinearAccelY());
@@ -151,27 +179,185 @@ public class Robot extends TimedRobot {
     System.out.println("Robot.autonomous()");
     timer.reset();
     timer.start();
-
+    turnmode = false;
     tank.setSafetyEnabled(false);
     gyro.reset();
     gyro.calibrate();
-    
+    ydistancetraveled = 0;
+    targetangle = 0;
+    stepcounter = 1;
+    currenttime = 0;
    }
-  
+  public void ZeroTurn(){
+    if (gyrocorrectionvalue > ANGLE_DEAD_ZONE){
+       tank.tankDrive(-0.375, 0.375, false);
+       
+      }
+      else if(gyrocorrectionvalue < NGANGLE_DEAD_ZONE){
+       tank.tankDrive(0.375, -0.375, false);
+       
+      }
+    }
+    public void MovingTurn(){
+      if (gyrocorrectionvalue > ANGLE_DEAD_ZONE){
+         tank.tankDrive(-0.4, -0.3, false);
+         
+        }
+        else if(gyrocorrectionvalue < NGANGLE_DEAD_ZONE){
+         tank.tankDrive(-0.3, -0.4, false);
+         
+        }
+      }
    @Override
    public void autonomousPeriodic() { //autonomous code
-   currentgyroangle = gyro.getAngle(); 
-   gyrodrivecorrection();
-   System.out.println("gyro correction value is " + gyrocorrectionvalue);
-     if (gyrocorrectionvalue > ANGLE_DEAD_ZONE){
-      tank.tankDrive(-0.3, 0.3, false);
-     }
-     else if(gyrocorrectionvalue < NGANGLE_DEAD_ZONE){
-      tank.tankDrive(0.3, -0.3, false);
-     }
-     else {
-      tank.tankDrive(0.0, 0.0);
-     }
+    currentgyroangle = gyro.getAngle();
+    Yaccel = gyro.getRawAccelY();
+    gyrodrivecorrection();
+   distancemeasuring();
+   //System.out.println("gyro correction value is " + gyrocorrectionvalue);
+   //System.out.println("distance traveled" + ydistancetraveled);
+   //System.out.println("Yaccel = " + Yaccel);
+   //System.out.println("Time is " + timer.get());
+   //System.out.println("Target angle = " + targetangle);
+   //System.out.println("" + currentgyroangle);
+   //System.out.println(""  );
+
+    currenttime = timer.get();
+    
+      if(timer.get() > 0 && timer.get() <= 3.817 && stepcounter == 1)
+    {
+      targetangle = 0;
+      turnmode = false;
+      System.out.println("SC1 drive");
+    }    
+    else if(timer.get() > 3.817 && stepcounter == 1)
+    {
+      turnmode = true;
+      targetangle = 90;
+      stepcounter++;
+      System.out.println("SC1 turning");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 2)
+    {
+      turnmode = false;
+      timer.reset();
+      System.out.println("Timer Reset");
+      stepcounter++;
+    }
+    else if(timer.get() > 0 && timer.get() <= 1.445 && stepcounter == 3)
+    {
+      targetangle = 90;
+      turnmode = false;
+      System.out.println("SC3 Drive");
+    }    
+    else if(timer.get() > 1.445 && stepcounter == 3)
+    {
+      turnmode = true;
+      targetangle = 180;
+      stepcounter++;
+      System.out.println("SC3 Turning");
+
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 4)
+    {
+      turnmode = false;
+      timer.reset();
+      stepcounter++;
+      System.out.println("Timer Reset");
+    }
+    else if(timer.get() > 0 && timer.get() <= 1.303 && stepcounter == 5) //Logan started here
+    {
+      targetangle = 180;
+      turnmode = false;
+      System.out.println("SC5 Drive");
+    }    
+    else if(timer.get() > 1.303 && stepcounter == 5)
+    {
+      turnmode = true;
+      targetangle = 270;
+      stepcounter++;
+      System.out.println("SC5 Turning");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 6)
+    {
+      turnmode = false;
+      timer.reset();
+      stepcounter++;
+      System.out.println("Timer Reset");
+    }
+    else if(timer.get() > 0 && timer.get() <= 1.182 && stepcounter == 7)
+    {
+      targetangle = 270;
+      turnmode = false;
+      System.out.println("SC7 Drive");
+    }    
+    else if(timer.get() > 1.182 && stepcounter == 7)
+    {
+      turnmode = true;
+      targetangle = 348;
+      stepcounter++;
+      System.out.println("Sc7 Turn");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 8)
+    {
+      turnmode = false;
+      timer.reset();
+      stepcounter++;
+      System.out.println("Timer Reset");
+    }
+    else if(timer.get() > 0 && timer.get() <= 3.41 && stepcounter == 9)
+    {
+      targetangle = 348;
+      turnmode = false;
+      System.out.println("SC9 Drive");
+    }    
+    else if(timer.get() > 3.41 && stepcounter == 9)
+    {
+      turnmode = true;
+      targetangle = 270;
+      stepcounter++;
+      System.out.println("Sc9 Turn");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 10)
+    {
+      turnmode = false;
+      timer.reset();
+      stepcounter++;
+      System.out.println("Reset Time");
+    }
+    else if(timer.get() > 0 && timer.get() <= 1.333 && stepcounter == 11)
+    {
+      targetangle = 270;
+      turnmode = false;
+      System.out.println("SC11 Drive");
+    }    
+    else if(timer.get() > 1.333 && stepcounter == 11)
+    {
+      turnmode = true;
+      targetangle = 180;
+      stepcounter++;
+      System.out.println("SC11 Turn");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 12)
+    {
+      turnmode = false;
+      timer.reset();
+      stepcounter++;
+      System.out.println("Reset Time");
+    }
+      if (Math.abs(gyrocorrectionvalue) > 10){
+        ZeroTurn();
+      }
+       else if (Math.abs(gyrocorrectionvalue) > 2){
+        MovingTurn();
+      }
+      else if(turnmode == true){
+        tank.tankDrive(0, 0, false);
+      }
+      else 
+      tank.tankDrive(-0.4, -0.4, false);
+        
+     
 
    }
 
