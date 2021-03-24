@@ -110,121 +110,7 @@ public class Robot extends TimedRobot {
 
 
   public void autonpath1(){
-    
-
-  }
-  @Override
-  public void teleopPeriodic() { //1 is 100% so .2 is 20%
-
-    if(rightjoy.getRawButton(5)){tankDriveMode = true;}
-    if(rightjoy.getRawButton(6)){tankDriveMode = false;}
-
-    if(tankDriveMode){
-      tank.tankDrive(getLeftJoy(), getRightJoy(), true);
-    }
-    else{
-      tank.arcadeDrive(getRightJoy(), getRightJoyX(), true);
-    }
-    distancemeasuring();
-    System.out.println("distance traveled" + ydistancetraveled);
-
-    System.out.println("gyro angle is" + gyro.getAngle());
-    System.out.println("Distance is " + gyro.getWorldLinearAccelY());
-  if (operator.getRawButton(12)) {
-    lift.set(-1);
-    } else if (operator.getRawButton(11)) {
-        lift.set(1);
-    } else {
-        lift.set(0);
-    }
-
-  if (operator.getRawButton(3)) {
-  balleater.set(-0.7);
-  } else if (operator.getRawButton(4)) {
-  balleater.set(0.4);
-  } else {
-  balleater.set(0);
-  }
-
-  if (operator.getRawButton(2)) { //this is the statment for shooting forward
-  shoot.set(-1);
-} else if (operator.getRawButton(1)) { //this is a statment for reversing the shooter
-  shoot.set(1);
-} else {
-  shoot.set(0);
-}
-
-  if (operator.getRawButton(7)) {
-        spinnything.set(1);
-      }
-      else {
-        spinnything.set(0);
-  }
-  
-  if (operator.getRawButton(9)) {
-  liftlock.set(-1);
-} else if (operator.getRawButton(10)) {
-  liftlock.set(1);
-} else {
-  liftlock.set(0);
-}
-
-
-  }
-
-
-  @Override
-  public void autonomousInit()
-   {
-    System.out.println("Robot.autonomous()");
-    timer.reset();
-    timer.start();
-    turnmode = false;
-    tank.setSafetyEnabled(false);
-    gyro.reset();
-    gyro.calibrate();
-    ydistancetraveled = 0;
-    targetangle = 0;
-    stepcounter = 1;
-    currenttime = 0;
-   }
-  public void ZeroTurn(){
-    if (gyrocorrectionvalue > ANGLE_DEAD_ZONE){
-       tank.tankDrive(-0.375, 0.375, false);
-       
-      }
-      else if(gyrocorrectionvalue < NGANGLE_DEAD_ZONE){
-       tank.tankDrive(0.375, -0.375, false);
-       
-      }
-    }
-    public void MovingTurn(){
-      if (gyrocorrectionvalue > ANGLE_DEAD_ZONE){
-         tank.tankDrive(-0.4, -0.3, false);
-         
-        }
-        else if(gyrocorrectionvalue < NGANGLE_DEAD_ZONE){
-         tank.tankDrive(-0.3, -0.4, false);
-         
-        }
-      }
-   @Override
-   public void autonomousPeriodic() { //autonomous code
-    currentgyroangle = gyro.getAngle();
-    Yaccel = gyro.getRawAccelY();
-    gyrodrivecorrection();
-   distancemeasuring();
-   //System.out.println("gyro correction value is " + gyrocorrectionvalue);
-   //System.out.println("distance traveled" + ydistancetraveled);
-   //System.out.println("Yaccel = " + Yaccel);
-   //System.out.println("Time is " + timer.get());
-   //System.out.println("Target angle = " + targetangle);
-   //System.out.println("" + currentgyroangle);
-   //System.out.println(""  );
-
-    currenttime = timer.get();
-    
-      if(timer.get() > 0 && timer.get() <= 3.817 && stepcounter == 1)
+    if(timer.get() > 0 && timer.get() <= 3.817 && stepcounter == 1)
     {
       targetangle = 0;
       turnmode = false;
@@ -457,7 +343,510 @@ public class Robot extends TimedRobot {
       turnmode = true;
       System.out.println("End of Auton Path 1");
     }
-    
+  }
+  public void autonpath2(){
+    if(timer.get() > 0 && timer.get() <= 1.576 && stepcounter == 1)
+    {
+      targetangle = 0;
+      turnmode = false;
+      System.out.println("SC1 drive");
+    }    
+    else if(timer.get() > 1.576 && stepcounter == 1)
+    {
+      turnmode = true;
+      targetangle = -75;
+      stepcounter++;
+      System.out.println("SC1 turning");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 2)
+    {
+      turnmode = false;
+      timer.reset();
+      System.out.println("Timer Reset");
+      stepcounter++;
+    }
+    else if(timer.get() > 0 && timer.get() <= 2.031 && stepcounter == 3)
+    {
+      targetangle = -75;
+      turnmode = false;
+      System.out.println("SC3 drive");
+    }    
+    else if(timer.get() > 2.031 && stepcounter == 3)
+    {
+      turnmode = true;
+      targetangle = -5;
+      stepcounter++;
+      System.out.println("SC3 turning");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 4)
+    {
+      turnmode = false;
+      timer.reset();
+      System.out.println("Timer Reset");
+      stepcounter++;
+    }else if(timer.get() > 0 && timer.get() <= 4.051 && stepcounter == 5)
+    {
+      targetangle = -5;
+      turnmode = false;
+      System.out.println("SC5 drive");
+    }    
+    else if(timer.get() > 4.051 && stepcounter == 5)
+    {
+      turnmode = true;
+      targetangle = 65;
+      stepcounter++;
+      System.out.println("SC5 turning");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 6)
+    {
+      turnmode = false;
+      timer.reset();
+      System.out.println("Timer Reset");
+      stepcounter++;
+    }else if(timer.get() > 0 && timer.get() <= 2 && stepcounter == 7)
+    {
+      targetangle = 65;
+      turnmode = false;
+      System.out.println("SC7 drive");
+    }    
+    else if(timer.get() > 2 && stepcounter == 7)
+    {
+      turnmode = true;
+      targetangle = -23;
+      stepcounter++;
+      System.out.println("SC7 turning");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 8)
+    {
+      turnmode = false;
+      timer.reset();
+      System.out.println("Timer Reset");
+      stepcounter++;
+    }else if(timer.get() > 0 && timer.get() <= 1.576 && stepcounter == 9)
+    {
+      targetangle = -23;
+      turnmode = false;
+      System.out.println("SC9 drive");
+    }    
+    else if(timer.get() > 1.576 && stepcounter == 9)
+    {
+      turnmode = true;
+      targetangle = -125;
+      stepcounter++;
+      System.out.println("SC9 turning");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 10)
+    {
+      turnmode = false;
+      timer.reset();
+      System.out.println("Timer Reset");
+      stepcounter++;
+    }
+    else if(timer.get() > 0 && timer.get() <= 1.818 && stepcounter == 11)
+    {
+      targetangle = -125;
+      turnmode = false;
+      System.out.println("SC11 drive");
+    }    
+    else if(timer.get() > 1.818 && stepcounter == 11)
+    {
+      turnmode = true;
+      targetangle = -190;
+      stepcounter++;
+      System.out.println("SC11 turning");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 12)
+    {
+      turnmode = false;
+      timer.reset();
+      System.out.println("Timer Reset");
+      stepcounter++;
+    }else if(timer.get() > 0 && timer.get() <= 2.436 && stepcounter == 13)
+    {
+      targetangle = -190;
+      turnmode = false;
+      System.out.println("SC13 drive");
+    }    
+    else if(timer.get() > 2.436 && stepcounter == 13)
+    {
+      turnmode = true;
+      targetangle = -180;
+      stepcounter++;
+      System.out.println("SC13 turning");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 14)
+    {
+      turnmode = false;
+      timer.reset();
+      System.out.println("Timer Reset");
+      stepcounter++;
+    }else if(timer.get() > 0 && timer.get() <= 3.589 && stepcounter == 15)
+    {
+      targetangle = -180;
+      turnmode = false;
+      System.out.println("SC15 drive");
+    }    
+    else if(timer.get() > 3.589 && stepcounter == 15)
+    {
+      turnmode = true;
+      targetangle = -100;
+      stepcounter++;
+      System.out.println("SC15 turning");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 16)
+    {
+      turnmode = false;
+      timer.reset();
+      System.out.println("Timer Reset");
+      stepcounter++;
+    }else if(timer.get() > 0 && timer.get() <= 1.878 && stepcounter == 17)
+    {
+      targetangle = -100;
+      turnmode = false;
+      System.out.println("SC17 drive");
+    }    
+    else if(timer.get() > 1.878 && stepcounter == 17)
+    {
+      turnmode = true;
+      targetangle = -180;
+      stepcounter++;
+      System.out.println("SC17 turning");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 18)
+    {
+      turnmode = false;
+      timer.reset();
+      System.out.println("Timer Reset");
+      stepcounter++;
+    }else if(timer.get() > 0 && timer.get() <= 1.667 && stepcounter == 19)
+    {
+      targetangle = -180;
+      turnmode = false;
+      System.out.println("SC19 drive");
+    }    
+    else if(timer.get() > 1.667 && stepcounter == 19)
+    {
+      turnmode = true;
+      targetangle = -180;
+      System.out.println("End of Auton 2");
+    }
+  }
+  public void autonpath3(){
+    if(timer.get() > 0 && timer.get() <= 1.575 && stepcounter == 1)
+    {
+      targetangle = 0;
+      turnmode = false;
+      System.out.println("SC1 drive");
+    }    
+    else if(timer.get() > 1.575 && stepcounter == 1)
+    {
+      turnmode = true;
+      targetangle = -87;
+      stepcounter++;
+      System.out.println("SC1 turning");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 2)
+    {
+      turnmode = false;
+      timer.reset();
+      System.out.println("Timer Reset");
+      stepcounter++;
+    }
+    else if(timer.get() > 0 && timer.get() <= 1.182 && stepcounter == 3)
+    {
+      targetangle = -87;
+      turnmode = false;
+      System.out.println("SC3 drive");
+    }    
+    else if(timer.get() > 1.182 && stepcounter == 3)
+    {
+      turnmode = true;
+      targetangle = 65;
+      stepcounter++;
+      System.out.println("SC3 turning");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 4)
+    {
+      turnmode = false;
+      timer.reset();
+      System.out.println("Timer Reset");
+      stepcounter++;
+    }
+    else if(timer.get() > 0 && timer.get() <= 2.564 && stepcounter == 5)
+    {
+      targetangle = 65;
+      turnmode = false;
+      System.out.println("SC5 drive");
+    }    
+    else if(timer.get() > 2.564 && stepcounter == 5)
+    {
+      turnmode = true;
+      targetangle = 0;
+      stepcounter++;
+      System.out.println("SC5 turning");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 6)
+    {
+      turnmode = false;
+      timer.reset();
+      System.out.println("Timer Reset");
+      stepcounter++;
+    }
+    else if(timer.get() > 0 && timer.get() <= 1.272 && stepcounter == 7)
+    {
+      targetangle = 0;
+      turnmode = false;
+      System.out.println("SC7 drive");
+    }    
+    else if(timer.get() > 1.272 && stepcounter == 7)
+    {
+      turnmode = true;
+      targetangle = -87;
+      stepcounter++;
+      System.out.println("SC7 turning");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 8)
+    {
+      turnmode = false;
+      timer.reset();
+      System.out.println("Timer Reset");
+      stepcounter++;
+    }
+    else if(timer.get() > 0 && timer.get() <= 2.513 && stepcounter == 9)
+    {
+      targetangle = -87;
+      turnmode = false;
+      System.out.println("SC9 drive");
+    }    
+    else if(timer.get() > 2.513 && stepcounter == 9)
+    {
+      turnmode = true;
+      targetangle = 93;
+      stepcounter++;
+      System.out.println("SC9 turning");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 10)
+    {
+      turnmode = false;
+      timer.reset();
+      System.out.println("Timer Reset");
+      stepcounter++;
+    }
+    else if(timer.get() > 0 && timer.get() <= 2.513 && stepcounter == 11)
+    {
+      targetangle = 93;
+      turnmode = false;
+      System.out.println("SC11 drive");
+    }    
+    else if(timer.get() > 2.513 && stepcounter == 11)
+    {
+      turnmode = true;
+      targetangle = 0;
+      stepcounter++;
+      System.out.println("SC11 turning");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 12)
+    {
+      turnmode = false;
+      timer.reset();
+      System.out.println("Timer Reset");
+      stepcounter++;
+    }
+    else if(timer.get() > 0 && timer.get() <= 2.462 && stepcounter == 13)
+    {
+      targetangle = 0;
+      turnmode = false;
+      System.out.println("SC13 drive");
+    }    
+    else if(timer.get() > 2.462 && stepcounter == 13)
+    {
+      turnmode = true;
+      targetangle = -90;
+      stepcounter++;
+      System.out.println("SC13 turning");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 14)
+    {
+      turnmode = false;
+      timer.reset();
+      System.out.println("Timer Reset");
+      stepcounter++;
+    }
+    else if(timer.get() > 0 && timer.get() <= 2.513 && stepcounter == 15)
+    {
+      targetangle = -90;
+      turnmode = false;
+      System.out.println("SC15 drive");
+    }    
+    else if(timer.get() > 2.513 && stepcounter == 15)
+    {
+      turnmode = true;
+      targetangle = 90;
+      stepcounter++;
+      System.out.println("SC15 turning");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 16)
+    {
+      turnmode = false;
+      timer.reset();
+      System.out.println("Timer Reset");
+      stepcounter++;
+    }
+    if(timer.get() > 0 && timer.get() <= 1.378 && stepcounter == 17)
+    {
+      targetangle = 90;
+      turnmode = false;
+      System.out.println("SC17 drive");
+    }    
+    else if(timer.get() > 1.378 && stepcounter == 17)
+    {
+      turnmode = true;
+      targetangle = 0;
+      stepcounter++;
+      System.out.println("SC17 turning");
+    }
+    else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 18)
+    {
+      turnmode = false;
+      timer.reset();
+      System.out.println("Timer Reset");
+      stepcounter++;
+    }
+    else if(timer.get() > 0 && timer.get() <= 1.939 && stepcounter == 19)
+    {
+      targetangle = 0;
+      turnmode = false;
+      System.out.println("SC19 drive");
+    }    
+    else if(timer.get() > 1.939 && stepcounter == 19)
+    {
+      turnmode = true;
+      targetangle = 0;
+      System.out.println("End of Auton 3");
+    }
+  }
+  @Override
+  public void teleopPeriodic() { //1 is 100% so .2 is 20%
+
+    if(rightjoy.getRawButton(5)){tankDriveMode = true;}
+    if(rightjoy.getRawButton(6)){tankDriveMode = false;}
+
+    if(tankDriveMode){
+      tank.tankDrive(getLeftJoy(), getRightJoy(), true);
+    }
+    else{
+      tank.arcadeDrive(getRightJoy(), getRightJoyX(), true);
+    }
+    distancemeasuring();
+    System.out.println("distance traveled" + ydistancetraveled);
+
+    System.out.println("gyro angle is" + gyro.getAngle());
+    System.out.println("Distance is " + gyro.getWorldLinearAccelY());
+  if (operator.getRawButton(12)) {
+    lift.set(-1);
+    } else if (operator.getRawButton(11)) {
+        lift.set(1);
+    } else {
+        lift.set(0);
+    }
+
+  if (operator.getRawButton(3)) {
+  balleater.set(-0.7);
+  } else if (operator.getRawButton(4)) {
+  balleater.set(0.4);
+  } else {
+  balleater.set(0);
+  }
+
+  if (operator.getRawButton(2)) { //this is the statment for shooting forward
+  shoot.set(-1);
+} else if (operator.getRawButton(1)) { //this is a statment for reversing the shooter
+  shoot.set(1);
+} else {
+  shoot.set(0);
+}
+
+  if (operator.getRawButton(7)) {
+        spinnything.set(1);
+      }
+      else {
+        spinnything.set(0);
+  }
+  
+  if (operator.getRawButton(9)) {
+  liftlock.set(-1);
+} else if (operator.getRawButton(10)) {
+  liftlock.set(1);
+} else {
+  liftlock.set(0);
+}
+
+
+  }
+
+
+  @Override
+  public void autonomousInit()
+   {
+    System.out.println("Robot.autonomous()");
+    timer.reset();
+    timer.start();
+    turnmode = false;
+    tank.setSafetyEnabled(false);
+    gyro.reset();
+    gyro.calibrate();
+    ydistancetraveled = 0;
+    targetangle = 0;
+    stepcounter = 1;
+    currenttime = 0;
+   }
+  public void ZeroTurn(){
+    if (gyrocorrectionvalue > ANGLE_DEAD_ZONE){
+       tank.tankDrive(-0.375, 0.375, false);
+       
+      }
+      else if(gyrocorrectionvalue < NGANGLE_DEAD_ZONE){
+       tank.tankDrive(0.375, -0.375, false);
+       
+      }
+    }
+    public void MovingTurn(){
+      if (gyrocorrectionvalue > ANGLE_DEAD_ZONE){
+         tank.tankDrive(-0.4, -0.3, false);
+         
+        }
+        else if(gyrocorrectionvalue < NGANGLE_DEAD_ZONE){
+         tank.tankDrive(-0.3, -0.4, false);
+         
+        }
+      }
+   @Override
+   public void autonomousPeriodic() { //autonomous code
+    currentgyroangle = gyro.getAngle();
+    Yaccel = gyro.getRawAccelY();
+    gyrodrivecorrection();
+    distancemeasuring();
+
+    if (autonpath == 1){
+    autonpath1();
+    }
+    else if (autonpath == 2){
+    autonpath2();
+    }
+    else if (autonpath == 3){
+    autonpath3();
+    }
+
+   //System.out.println("gyro correction value is " + gyrocorrectionvalue);
+   //System.out.println("distance traveled" + ydistancetraveled);
+   //System.out.println("Yaccel = " + Yaccel);
+   //System.out.println("Time is " + timer.get());
+   //System.out.println("Target angle = " + targetangle);
+   //System.out.println("" + currentgyroangle);
+   //System.out.println(""  );
+
+    currenttime = timer.get();
+
       if (Math.abs(gyrocorrectionvalue) > 10){
         ZeroTurn();
       }
