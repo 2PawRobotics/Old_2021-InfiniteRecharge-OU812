@@ -11,6 +11,7 @@ package frc.robot;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -20,7 +21,6 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import com.kauailabs.navx.frc.AHRS;
-
 
 /**
  * This is a demo program showing the use of the RobotDrive class, specifically
@@ -61,7 +61,7 @@ public class Robot extends TimedRobot {
   private double currenttime = 0;
   private double autondeadzone = 2;
   private boolean calibrating = false;
-  //this is a change
+    //this is a change
   public Robot()
   {
     System.out.println("Robot.constructor()");
@@ -78,7 +78,8 @@ public class Robot extends TimedRobot {
     leftjoy = new Joystick(1);
     operator = new Joystick(2);
     CameraServer.getInstance().startAutomaticCapture();
-    gyro = new AHRS(i2cPort);
+    //gyro = new AHRS(i2cPort);
+    gyro = new AHRS(SerialPort.Port.kUSB);
     gyro.reset();
     gyro.calibrate();
   }
@@ -737,7 +738,7 @@ public class Robot extends TimedRobot {
   }
   @Override
   public void teleopPeriodic() { //1 is 100% so .2 is 20%
-
+    System.out.println(gyro.isConnected());
     if(rightjoy.getRawButton(5)){tankDriveMode = true;}
     if(rightjoy.getRawButton(6)){tankDriveMode = false;}
 
