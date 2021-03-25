@@ -60,6 +60,7 @@ public class Robot extends TimedRobot {
   private double stepcounter = 1;
   private double currenttime = 0;
   private double autondeadzone = 2;
+  private boolean calibrating = false;
   public Robot()
   {
     System.out.println("Robot.constructor()");
@@ -110,13 +111,21 @@ public class Robot extends TimedRobot {
 
 
   public void autonpath1(){
-    if(timer.get() > 0 && timer.get() <= 3.817 && stepcounter == 1)
+    if(timer.get() < 10 && calibrating==true){
+
+      turnmode = true;
+    }
+    else if(timer.get() > 10 && calibrating == true ){
+      timer.reset();
+      calibrating = false;
+    }
+    else if(timer.get() > 0 && timer.get() <= 3.917 && stepcounter == 1)
     {
       targetangle = 0;
       turnmode = false;
       System.out.println("SC1 drive");
     }    
-    else if(timer.get() > 3.817 && stepcounter == 1)
+    else if(timer.get() > 3.917 && stepcounter == 1)
     {
       turnmode = true;
       targetangle = 90;
@@ -151,13 +160,13 @@ public class Robot extends TimedRobot {
       stepcounter++;
       System.out.println("Timer Reset");
     }
-    else if(timer.get() > 0 && timer.get() <= 1.303 && stepcounter == 5) //Logan started here
+    else if(timer.get() > 0 && timer.get() <= 1.403 && stepcounter == 5) //Logan started here
     {
       targetangle = 180;
       turnmode = false;
       System.out.println("SC5 Drive");
     }    
-    else if(timer.get() > 1.303 && stepcounter == 5)
+    else if(timer.get() > 1.403 && stepcounter == 5)
     {
       turnmode = true;
       targetangle = 270;
@@ -799,6 +808,7 @@ public class Robot extends TimedRobot {
     targetangle = 0;
     stepcounter = 1;
     currenttime = 0;
+    calibrating = true;
    }
   public void ZeroTurn(){
     if (gyrocorrectionvalue > ANGLE_DEAD_ZONE){
