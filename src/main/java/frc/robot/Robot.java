@@ -22,18 +22,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import com.kauailabs.navx.frc.AHRS;
 
+
 /**
  * This is a demo program showing the use of the RobotDrive class, specifically
  * it contains the code necessary to operate a robot with tank drive.
  */
 public class Robot extends TimedRobot {
   private DifferentialDrive tank;
-
   private Joystick rightjoy;
   private Joystick leftjoy;
   private Joystick operator;
   private Timer timer = new Timer();
-
   private final Spark lift = new Spark(6);
   private final Spark balleater = new Spark(5);
   private final Spark shoot = new Spark(4);
@@ -61,6 +60,8 @@ public class Robot extends TimedRobot {
   private double currenttime = 0;
   private double autondeadzone = 2;
   private boolean calibrating = false;
+  
+  
     //this is a change
   public Robot()
   {
@@ -69,21 +70,19 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     System.out.println("Robot.robotInit()");
-
    final SpeedController left = new SpeedControllerGroup(new Spark(0), new Spark(2));
    final SpeedController right = new SpeedControllerGroup(new Spark(1), new Spark(3));
-
     tank = new DifferentialDrive(left, right);
     rightjoy = new Joystick(0);
     leftjoy = new Joystick(1);
     operator = new Joystick(2);
     CameraServer.getInstance().startAutomaticCapture();
+
     //gyro = new AHRS(i2cPort);
     gyro = new AHRS(SerialPort.Port.kUSB);
     gyro.reset();
     gyro.calibrate();
   }
-
   public double getLeftJoy(){
     double raw = leftjoy.getY();
     return Math.abs(raw) < DEAD_ZONE ? 0.0 : raw; //if true returns 0.0 else return raw
@@ -110,11 +109,8 @@ public class Robot extends TimedRobot {
     newydistancetraveled = ydistancetraveled + finalyaccel;
     ydistancetraveled = newydistancetraveled;
   }
-
-
   public void autonpath1(){
     if(timer.get() < 10 && calibrating==true){
-
       turnmode = true;
     }
     else if(timer.get() > 10 && calibrating == true ){
@@ -153,7 +149,6 @@ public class Robot extends TimedRobot {
       targetangle = 180;
       stepcounter++;
       System.out.println("SC3 Turning");
-
     }
     else if(Math.abs(gyrocorrectionvalue) < autondeadzone && stepcounter == 4)
     {
@@ -542,7 +537,7 @@ public class Robot extends TimedRobot {
       System.out.println("End of Auton 2");
     }
   }
-  public void autonpath3(){
+  public void autonpath6(){
     if(timer.get() > 0 && timer.get() <= 1.575 && stepcounter == 1)
     {
       targetangle = 0;
@@ -738,6 +733,7 @@ public class Robot extends TimedRobot {
   }
   @Override
   public void teleopPeriodic() { //1 is 100% so .2 is 20%
+
     System.out.println(gyro.isConnected());
     if(rightjoy.getRawButton(5)){tankDriveMode = true;}
     if(rightjoy.getRawButton(6)){tankDriveMode = false;}
@@ -750,7 +746,6 @@ public class Robot extends TimedRobot {
     }
     distancemeasuring();
     System.out.println("distance traveled" + ydistancetraveled);
-
     System.out.println("gyro angle is" + gyro.getAngle());
     System.out.println("Distance is " + gyro.getWorldLinearAccelY());
   if (operator.getRawButton(12)) {
@@ -760,7 +755,6 @@ public class Robot extends TimedRobot {
     } else {
         lift.set(0);
     }
-
   if (operator.getRawButton(3)) {
   balleater.set(-0.7);
   } else if (operator.getRawButton(4)) {
@@ -768,7 +762,6 @@ public class Robot extends TimedRobot {
   } else {
   balleater.set(0);
   }
-
   if (operator.getRawButton(2)) { //this is the statment for shooting forward
   shoot.set(-1);
 } else if (operator.getRawButton(1)) { //this is a statment for reversing the shooter
@@ -776,7 +769,6 @@ public class Robot extends TimedRobot {
 } else {
   shoot.set(0);
 }
-
   if (operator.getRawButton(7)) {
         spinnything.set(1);
       }
@@ -791,11 +783,7 @@ public class Robot extends TimedRobot {
 } else {
   liftlock.set(0);
 }
-
-
   }
-
-
   @Override
   public void autonomousInit()
    {
@@ -838,7 +826,6 @@ public class Robot extends TimedRobot {
     Yaccel = gyro.getRawAccelY();
     gyrodrivecorrection();
     distancemeasuring();
-
     if (autonpath == 1){
     autonpath1();
     }
@@ -846,9 +833,8 @@ public class Robot extends TimedRobot {
     autonpath2();
     }
     else if (autonpath == 3){
-    autonpath3();
+    autonpath6();
     }
-
    //System.out.println("gyro correction value is " + gyrocorrectionvalue);
    //System.out.println("distance traveled" + ydistancetraveled);
    //System.out.println("Yaccel = " + Yaccel);
@@ -856,9 +842,7 @@ public class Robot extends TimedRobot {
    //System.out.println("Target angle = " + targetangle);
    //System.out.println("" + currentgyroangle);
    //System.out.println(""  );
-
     currenttime = timer.get();
-
       if (Math.abs(gyrocorrectionvalue) > 10){
         ZeroTurn();
       }
@@ -872,16 +856,12 @@ public class Robot extends TimedRobot {
       tank.tankDrive(-0.4, -0.4, false);
         
      
-
    }
-
   public void operatorControl ()
   {
     System.out.println("Robot.operatorControl()");
-
     tank.setSafetyEnabled(true);
   }
-
   public void disable()
   {
     System.out.println("Robot.disable()");
