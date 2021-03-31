@@ -54,7 +54,7 @@ public class Robot extends TimedRobot {
   private double distancebias = 0.05;
   private double finalyaccel;
   private boolean moving;
-  private double autonpath = 2;
+  private double autonpath = 1;
   private boolean turnmode = false;
   private double stepcounter = 1;
   private double currenttime = 0;
@@ -198,13 +198,13 @@ public class Robot extends TimedRobot {
       stepcounter++;
       System.out.println("Timer Reset");
     }
-    else if(timer.get() > 0 && timer.get() <= 4.51 && stepcounter == 9)
+    else if(timer.get() > 0 && timer.get() <= 4.31 && stepcounter == 9)
     {
       targetangle = 355;
       turnmode = false;
       System.out.println("SC9 Drive");
     }    
-    else if(timer.get() > 4.51 && stepcounter == 9)
+    else if(timer.get() > 4.31 && stepcounter == 9)
     {
       turnmode = true;
       targetangle = 272;
@@ -318,13 +318,13 @@ public class Robot extends TimedRobot {
       stepcounter++;
       System.out.println("Reset Time");
     }
-    else if(timer.get() > 0 && timer.get() <= 1.424 && stepcounter == 21)
+    else if(timer.get() > 0 && timer.get() <= 1.324 && stepcounter == 21)
     {
       targetangle = -90;
       turnmode = false;
       System.out.println("SC21 Drive");
     }    
-    else if(timer.get() > 1.424 && stepcounter == 21)
+    else if(timer.get() > 1.324 && stepcounter == 21)
     {
       turnmode = true;
       targetangle = -180;
@@ -340,13 +340,13 @@ public class Robot extends TimedRobot {
     }
     else if(timer.get() > 0 && timer.get() <= 7.871 && stepcounter == 23)
     {
-      targetangle = -175;
+      targetangle = -180;
       turnmode = false;
       System.out.println("SC23 Drive");
     }    
     else if(timer.get() > 7.871 && stepcounter == 23)
     {
-      targetangle = -175;
+      targetangle = -180;
       turnmode = true;
       System.out.println("End of Auton Path 1");
     }
@@ -539,13 +539,13 @@ public class Robot extends TimedRobot {
     }
   }
   public void autonpath6(){
-    if(timer.get() > 0 && timer.get() <= 1.575 && stepcounter == 1)
+    if(timer.get() > 0 && timer.get() <= 1.5 && stepcounter == 1)
     {
       targetangle = 0;
       turnmode = false;
       System.out.println("SC1 drive");
     }    
-    else if(timer.get() > 1.575 && stepcounter == 1)
+    else if(timer.get() > 1.5 && stepcounter == 1)
     {
       turnmode = true;
       targetangle = -87;
@@ -579,16 +579,16 @@ public class Robot extends TimedRobot {
       System.out.println("Timer Reset");
       stepcounter++;
     }
-    else if(timer.get() > 0 && timer.get() <= 2.564 && stepcounter == 5)
+    else if(timer.get() > 0 && timer.get() <= 3.05 && stepcounter == 5)
     {
       targetangle = 65;
       turnmode = false;
       System.out.println("SC5 drive");
     }    
-    else if(timer.get() > 2.564 && stepcounter == 5)
+    else if(timer.get() > 3.05 && stepcounter == 5)
     {
       turnmode = true;
-      targetangle = 0;
+      targetangle = 7;
       stepcounter++;
       System.out.println("SC5 turning");
     }
@@ -599,16 +599,16 @@ public class Robot extends TimedRobot {
       System.out.println("Timer Reset");
       stepcounter++;
     }
-    else if(timer.get() > 0 && timer.get() <= 1.272 && stepcounter == 7)
+    else if(timer.get() > 0 && timer.get() <= 1.3 && stepcounter == 7)
     {
-      targetangle = 0;
+      targetangle = 7;
       turnmode = false;
       System.out.println("SC7 drive");
     }    
-    else if(timer.get() > 1.272 && stepcounter == 7)
+    else if(timer.get() > 1.3 && stepcounter == 7)
     {
       turnmode = true;
-      targetangle = -87;
+      targetangle = -81;
       stepcounter++;
       System.out.println("SC7 turning");
     }
@@ -621,14 +621,14 @@ public class Robot extends TimedRobot {
     }
     else if(timer.get() > 0 && timer.get() <= 2.513 && stepcounter == 9)
     {
-      targetangle = -87;
+      targetangle = -81;
       turnmode = false;
       System.out.println("SC9 drive");
     }    
     else if(timer.get() > 2.513 && stepcounter == 9)
     {
       turnmode = true;
-      targetangle = 93;
+      targetangle = 90;
       stepcounter++;
       System.out.println("SC9 turning");
     }
@@ -639,16 +639,16 @@ public class Robot extends TimedRobot {
       System.out.println("Timer Reset");
       stepcounter++;
     }
-    else if(timer.get() > 0 && timer.get() <= 2.513 && stepcounter == 11)
+    else if(timer.get() > 0 && timer.get() <= 2.72 && stepcounter == 11)
     {
-      targetangle = 93;
+      targetangle = 90;
       turnmode = false;
       System.out.println("SC11 drive");
     }    
-    else if(timer.get() > 2.513 && stepcounter == 11)
+    else if(timer.get() > 2.72 && stepcounter == 11)
     {
       turnmode = true;
-      targetangle = 0;
+      targetangle = 8;
       stepcounter++;
       System.out.println("SC11 turning");
     }
@@ -659,16 +659,16 @@ public class Robot extends TimedRobot {
       System.out.println("Timer Reset");
       stepcounter++;
     }
-    else if(timer.get() > 0 && timer.get() <= 2.462 && stepcounter == 13)
+    else if(timer.get() > 0 && timer.get() <= 2.362 && stepcounter == 13)
     {
-      targetangle = 0;
+      targetangle = 8;
       turnmode = false;
       System.out.println("SC13 drive");
     }    
-    else if(timer.get() > 2.462 && stepcounter == 13)
+    else if(timer.get() > 2.362 && stepcounter == 13)
     {
       turnmode = true;
-      targetangle = -90;
+      targetangle = -86;
       stepcounter++;
       System.out.println("SC13 turning");
     }
@@ -681,7 +681,7 @@ public class Robot extends TimedRobot {
     }
     else if(timer.get() > 0 && timer.get() <= 2.513 && stepcounter == 15)
     {
-      targetangle = -90;
+      targetangle = -86;
       turnmode = false;
       System.out.println("SC15 drive");
     }    
