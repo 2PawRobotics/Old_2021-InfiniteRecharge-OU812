@@ -110,15 +110,16 @@ public class Robot extends TimedRobot {
     ydistancetraveled = newydistancetraveled;
   }
   public void autonpath1(){
-    if(calibrating == true && timer.get() < 5){
-      turnmode = true;
-      System.out.println("cal-i-brat-zion");
-    }
-    else if(calibrating == true && timer.get() > 5 ){
-      timer.reset();
-      calibrating = false;
-    }
-    else if(timer.get() > 0 && timer.get() <= 3.8 && stepcounter == 1)
+    //if(calibrating == true && timer.get() < 5){
+      //turnmode = true;
+      //System.out.println("cal-i-brat-zion");
+    
+    //else if(calibrating == true && timer.get() > 5 ){
+      //timer.reset();
+      //calibrating = false;
+    
+    //else 
+    if(timer.get() > 0 && timer.get() <= 3.8 && stepcounter == 1)
     {
       targetangle = 0;
       turnmode = false;
@@ -327,7 +328,7 @@ public class Robot extends TimedRobot {
     else if(timer.get() > 1.324 && stepcounter == 21)
     {
       turnmode = true;
-      targetangle = -180;
+      targetangle = -178;
       stepcounter++;
       System.out.println("SC21 Turn");
     }
@@ -340,7 +341,7 @@ public class Robot extends TimedRobot {
     }
     else if(timer.get() > 0 && timer.get() <= 7.871 && stepcounter == 23)
     {
-      targetangle = -180;
+      targetangle = -178;
       turnmode = false;
       System.out.println("SC23 Drive");
     }    
